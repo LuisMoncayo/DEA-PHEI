@@ -1,0 +1,51 @@
+MAX = 15*u;
+
+60*v = 1;
+
+5*u - 10*v <= 0;
+7*u - 28*v <= 0;
+10*u - 30*v <= 0;
+15*u - 60*v <= 0;
+
+
+MAX = 10*u;
+
+30*v = 1;
+
+6*u - 12*v <= 0;
+8*u - 26*v <= 0;
+9*u - 16*v <= 0;
+15*u - 60*v <= 0;
+
+
+#-----------------------
+#--- Malmquist Index
+#-----------------------
+x0 <- matrix(c(10, 28, 30, 60),ncol=1)
+y0 <- matrix(c(5, 7, 10, 15),ncol=1)
+
+x1 <- matrix(c(12, 26, 16, 60 ),ncol=1)
+y1 <- matrix(c(6, 8, 9, 15 ),ncol=1)
+
+dea.plot(x0, y0, RTS="vrs", txt=TRUE)
+dea.plot(x1, y1, RTS="vrs", add=TRUE, col="red")
+points(x1, y1, col="red", pch=16)
+text(x1, y1, 1:dim(x1)[1], col="red", adj=-1)
+
+m <- malmq(x0, y0, ID0 = NULL, x1, y1, ID1 = NULL, RTS="crs")
+print("Malmquist index for change in productivity, technology change:")
+print(m$mq)
+print("Index for change of frontier:")
+print(m$tc)
+print(m$ec)
+
+example00 <- dea(x0, y0, SLACK=TRUE, DUAL=TRUE, RTS="crs")
+print(example00)
+example10 <- dea(x1, y1, XREF = x0, YREF = y0, SLACK=TRUE, DUAL=TRUE, RTS="crs")
+print(example10)
+example11 <- dea(x1, y1, SLACK=TRUE, DUAL=TRUE, RTS="crs")
+print(example11)
+example01 <- dea(x0, y0, XREF = x1, YREF = y1, SLACK=TRUE, DUAL=TRUE, RTS="crs")
+print(example01)
+
+dea(x0, y1, SLACK=TRUE, DUAL=TRUE, RTS="vrs")
